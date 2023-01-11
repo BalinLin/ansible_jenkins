@@ -1,0 +1,7 @@
+---
+- name: Deploy pip
+  hosts: server
+  roles:
+    - role: pip
+      become: true # `become` means `sudo`
+      tags: ['pip']

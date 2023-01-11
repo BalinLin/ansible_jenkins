@@ -1,0 +1,20 @@
+---
+- name: "Create {{ Vars.Jenkins.docker_jenkins_home }} directory"
+  ansible.builtin.file:
+    path: "{{ Vars.Jenkins.docker_jenkins_home }}"
+    state: directory
+
+- name: Copy files to server
+  ansible.builtin.copy:
+    src: files/plugins.txt
+    dest: "{{ Vars.Jenkins.docker_jenkins_home }}"
+    mode: '755'
+
+- name: Copy templates to server
+  ansible.builtin.template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ Vars.Jenkins.docker_jenkins_home }}/{{ item }}"
+    mode: '755'
+  with_items:
+    - Dockerfile
+    - security.groovy

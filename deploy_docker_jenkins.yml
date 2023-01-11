@@ -1,0 +1,5 @@
+---
+- name: deploy docker
+  import_playbook: deploy_docker.yml
+- name: deploy jenkins
+  import_playbook: deploy_jenkins.yml

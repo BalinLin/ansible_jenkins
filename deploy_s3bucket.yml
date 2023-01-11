@@ -1,0 +1,12 @@
+---
+- name: Apply terraform
+  hosts: server
+  vars_files:
+  - vars/topology.yml
+  roles:
+    - role: terraform
+      become: true
+      tags: ['terraform']
+    - role: s3bucket
+      become: true
+      tags: ['terraform']

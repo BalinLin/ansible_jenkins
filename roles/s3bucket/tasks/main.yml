@@ -1,0 +1,21 @@
+---
+# community.general.terraform module: https://docs.ansible.com/ansible/latest/collections/community/general/terraform_module.html
+- name: Copy Terraform Code to Controller Node
+  ansible.builtin.copy:
+    src: ./infra/
+    dest: "{{ Vars.Terraform.project_path }}"
+    mode: '0755'
+
+- name: Define the backend configuration at init
+  community.general.terraform:
+    project_path: "{{ Vars.Terraform.project_path }}"
+    state: present
+    force_init: true
+    init_reconfigure: true
+    backend_config_files: ./config/config.s3.tfbackend
+    variables_files: ./config/balin-lab.tfvars
+  register: status
+
+- name: Debug output
+  ansible.builtin.debug:
+    var: status

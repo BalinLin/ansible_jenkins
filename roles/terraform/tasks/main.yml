@@ -1,0 +1,17 @@
+---
+# Install terraform: https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
+# Run yum-config-manager: https://stackoverflow.com/questions/53976165/importing-adding-a-yum-repo-file-using-ansible
+- name: Install yum-config-manager to manage your repositories.
+  ansible.builtin.package:
+    name: yum-utils
+    state: present
+  register: yum_manager_is_installed
+
+- name: Use yum-config-manager to add the official HashiCorp Linux repository.
+  ansible.builtin.command: yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+  when: yum_manager_is_installed is succeeded
+
+- name: Install Terraform from the new repository.
+  ansible.builtin.package:
+    name: terraform
+    state: present

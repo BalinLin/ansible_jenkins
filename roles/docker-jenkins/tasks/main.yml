@@ -1,0 +1,29 @@
+---
+- name: Setup docker environment
+  ansible.builtin.include_tasks: setup.yml
+
+- name: Build {{ Vars.Jenkins.docker_jenkins_image }} image
+  community.docker.docker_image:
+    build:
+      path: "{{ Vars.Jenkins.docker_jenkins_home }}"
+      dockerfile: Dockerfile
+    name: "{{ Vars.Jenkins.docker_jenkins_image }}"
+    source: build
+    state: present
+
+- name: Create {{ Vars.Jenkins.docker_jenkins_container }} container
+  community.docker.docker_container:
+    name: "{{ Vars.Jenkins.docker_jenkins_container }}"
+    image: "{{ Vars.Jenkins.docker_jenkins_image }}"
+    published_ports: # aliases: ports
+      - "{{ Vars.Jenkins.jenkins_port }}:{{ Vars.Jenkins.jenkins_port }}"
+      - "50000:50000"
+    restart_policy: always
+
+- name: Wait for jenkins to come up
+  ansible.builtin.uri:
+    url: "{{ Vars.Jenkins.jenkins_url }}"
+  register: jenkins_url_result
+  until: jenkins_url_result.status == 200
+  retries: 5
+  delay: 10

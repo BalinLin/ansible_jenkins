@@ -1,0 +1,9 @@
+---
+- name: Deploy docker
+  hosts: server
+  vars_files:
+  - vars/topology.yml
+  roles:
+    - role: docker
+      become: true
+      tags: ['docker']

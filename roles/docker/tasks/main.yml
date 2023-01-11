@@ -1,0 +1,44 @@
+---
+- name: Package Installer For Docker
+  ansible.builtin.package:
+    name: docker
+    state: present
+
+- name: Package Installer For Python3
+  ansible.builtin.package:
+    name: python3
+    state: present
+
+- name: Installing python library for the Docker Remote API
+  ansible.builtin.pip:
+    name: docker-py
+
+- name: Start docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+
+- name: "Create {{ Vars.Docker.docker_home }} directory"
+  ansible.builtin.file:
+    path: "{{ Vars.Docker.docker_home }}"
+    state: directory
+
+- name: Copy Html Code to Controller Node
+  ansible.builtin.copy:
+    src: ./index.html
+    dest: "{{ Vars.Docker.index_path }}"
+    mode: '0755'
+
+- name: Create a nginx container
+  community.docker.docker_container:
+    name: nginx
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "{{ Vars.Docker.index_path }}:/usr/share/nginx/html/index.html"
+  register: status
+
+- name: Debug nginx status
+  ansible.builtin.debug:
+    var: status

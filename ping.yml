@@ -1,0 +1,13 @@
+---
+- name: Ping test
+  hosts: server
+  tasks:
+    # task 1
+    - name: Test connection
+      ansible.builtin.ping:
+      register: message
+
+    # task 2
+    - name: Print debug message
+      ansible.builtin.debug:
+        msg: "{{ message }}"

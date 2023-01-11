@@ -1,0 +1,12 @@
+---
+- name: Check if pip is already installed
+  ansible.builtin.command: pip --version # if pip is not installed will encounter error.
+  ignore_errors: true # ignore error when pip in not installed.
+  changed_when: false
+  register: pip_is_installed
+
+- name: Install pip
+  ansible.builtin.apt:
+    name: python-pip
+    update_cache: true # Run `apt-get update` before install `python-pip`
+  when: pip_is_installed.rc != 0
