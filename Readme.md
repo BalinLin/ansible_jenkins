@@ -37,6 +37,8 @@ ansible server -m ping
 ```
 
 ## Use Ansible server to run terraform on controller node (EC2).
+![image](./images/EC2_terraform.png)
+
 1. Setup Security group and IAM to your EC2 instance.
 
 2. Run playbook
@@ -48,6 +50,8 @@ ansible-playbook deploy_s3bucket.yml -i hosts --ask-vault-pass
 ```
 
 ## Use Ansible server to setup Jenkins on controller node (EC2).
+![image](./images/EC2_jenkins.png)
+
 1. Setup Security group and IAM to your EC2 instance.
 
 2. Run playbook
@@ -61,6 +65,7 @@ ansible-playbook deploy_docker_jenkins.yml -i hosts --ask-vault-pass
 3. Open your browser and enter your EC2's Public IPv4 DNS with port 8080 (http).
 
 ## Use local Jenkins server's pipeline to run Ansible which run terraform on controller node (EC2).
+![image](./images/Jenkins_terraform.png)
 
 1. [Run jenkins with docker](https://hub.docker.com/_/jenkins#:~:text=out%20jenkinsci/jenkins-,How%20to%20use%20this%20image,-docker%20run%20%2Dp)
 ```bash
