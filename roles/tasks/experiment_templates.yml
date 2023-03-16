@@ -1,0 +1,22 @@
+---
+- name: "List experiment templates ids"
+  ansible.builtin.shell: |
+    aws fis list-experiment-templates --profile nsi-dev --region us-west-2 --output json | jq -r '.experimentTemplates[].id'
+  register: listTamplates
+
+- name: "Print listTamplates"
+  ansible.builtin.debug:
+    msg:
+      - "{{ listTamplates }}"
+
+- name: "Print listTamplates with itmes"
+  ansible.builtin.debug:
+    msg:
+      - "Delete template {{ item }}."
+  with_items: "{{ listTamplates.stdout_lines }}"
+
+- name: "Delete templates"
+  ansible.builtin.shell: |
+    aws fis delete-experiment-template --id {{ item }} --profile nsi-dev --region us-west-2
+  register: listTamplates
+  with_items: "{{ listTamplates.stdout_lines }}"

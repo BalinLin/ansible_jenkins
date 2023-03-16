@@ -1,0 +1,42 @@
+---
+- name: "Create chaos-mesh namespace"
+  ansible.builtin.shell: |
+    kubectl create namespace chaos-mesh
+  register: createNamespace
+  ignore_errors: true
+
+- name: "Print createNamespace"
+  ansible.builtin.debug:
+    msg:
+      - "{{ createNamespace }}"
+
+# return "1" when namespace exits
+# return "0" when namespace not exits
+- name: "Print createNamespace return code"
+  ansible.builtin.debug:
+    msg:
+      - "{{ createNamespace.rc }}"
+  when: createNamespace.rc is match("1")
+
+- name: "Print createNamespace fail when"
+  ansible.builtin.debug:
+    msg:
+      - "{{ createNamespace.stderr }}"
+  failed_when: "'Error' in createNamespace.stderr"
+
+- name: "Print createNamespace not in"
+  ansible.builtin.debug:
+    msg:
+      - "{{ createNamespace.stderr }}"
+  when: "'Error' not in createNamespace.stderr"
+
+- name: "Print createNamespace stdout"
+  ansible.builtin.debug:
+    msg:
+      - "{{ createNamespace.stdout }}"
+
+- name: "Print createNamespace with itmes"
+  ansible.builtin.debug:
+    msg:
+      - "{{ item }}."
+  with_items: "{{ createNamespace.stdout_lines }}"

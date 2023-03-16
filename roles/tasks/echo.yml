@@ -1,0 +1,11 @@
+---
+- name: "Create echo w/o true"
+  ansible.builtin.debug:
+    msg:
+      - echo w/o true
+
+- name: "Create echo with true"
+  ansible.builtin.debug:
+    msg:
+      - echo with true
+  when: false

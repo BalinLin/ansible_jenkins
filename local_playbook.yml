@@ -1,0 +1,6 @@
+---
+- name: Local playbook
+  hosts: local
+  roles:
+    - role: local
+      # become: true # `become` means `sudo`

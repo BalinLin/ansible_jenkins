@@ -1,0 +1,57 @@
+---
+# w/o ns test, rc will be: [1, 1, 1, 1, 1]
+# w ns test, rc will be: [0, 0, 0, 1, 1]
+- name: Get namespace
+  ansible.builtin.shell: |
+    kubectl get ns test
+  register: getNamespace
+  ignore_errors: true
+
+- name: "Print getNamespace"
+  ansible.builtin.debug:
+    msg:
+      - "{{ getNamespace }}"
+
+- name: Disable Chaos-Mesh annotated namespace
+  ansible.builtin.shell: |
+    kubectl annotate ns test chaos-mesh.org/inject-
+  register: disableNamespace
+  ignore_errors: true
+
+- name: "Print disableNamespace"
+  ansible.builtin.debug:
+    msg:
+      - "{{ disableNamespace }}"
+
+- name: Delete namespace
+  ansible.builtin.shell: |
+    kubectl delete ns test
+  register: deleteNamespace
+  ignore_errors: true
+
+- name: "Print deleteNamespace"
+  ansible.builtin.debug:
+    msg:
+      - "{{ deleteNamespace }}"
+
+- name: Helm uninstall
+  ansible.builtin.shell: |
+    helm uninstall chaos-mesh -n balin
+  register: helmUninstall
+  ignore_errors: true
+
+- name: "Print helmUninstall"
+  ansible.builtin.debug:
+    msg:
+      - "{{ helmUninstall }}"
+
+- name: Helm uninstall2
+  ansible.builtin.shell: |
+    helm uninstall balin -n chaos-mesh
+  register: helmUninstall2
+  ignore_errors: true
+
+- name: "Print helmUninstall2"
+  ansible.builtin.debug:
+    msg:
+      - "{{ helmUninstall2 }}"

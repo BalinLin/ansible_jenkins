@@ -1,0 +1,13 @@
+---
+# - name: When true
+#   ansible.builtin.include_tasks: echo.yml
+#   when: true
+
+# - name: List and delete experiment templates
+#   ansible.builtin.include_tasks: experiment_templates.yml
+
+# - name: Namespace create
+#   ansible.builtin.include_tasks: namespace_create.yml
+
+# - name: Namespace delete
+#   ansible.builtin.include_tasks: namespace_delete.yml

@@ -4,3 +4,6 @@
 [server:vars]
 ansible_port=22
 ansible_user=ec2-user
+
+[local]
+localhost ansible_connection=local
